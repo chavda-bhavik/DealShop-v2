@@ -6,19 +6,32 @@
 package servlets;
 
 import beans.AdminBeanLocal;
+import static entity.Usertb_.password;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
+import javax.inject.Inject;
+import javax.security.enterprise.AuthenticationStatus;
+import static javax.security.enterprise.AuthenticationStatus.SEND_FAILURE;
+import static javax.security.enterprise.AuthenticationStatus.SUCCESS;
+import static javax.security.enterprise.authentication.mechanism.http.AuthenticationParameters.withParams;
+import javax.security.enterprise.credential.Credential;
+import javax.security.enterprise.credential.Password;
+import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.SecurityContext;
 
 /**
  *
  * @author bhavik
  */
 public class AdminServlet extends HttpServlet {
+        
+    @Inject javax.security.enterprise.SecurityContext securityContext;
+    
     @EJB AdminBeanLocal admin;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,6 +53,32 @@ public class AdminServlet extends HttpServlet {
             out.println("<title>Servlet AdminServlet</title>");            
             out.println("</head>");
             out.println("<body>");
+        
+        String username= "";
+        String password="";
+        Credential credential = new UsernamePasswordCredential(username, new Password(password));
+
+        AuthenticationStatus status = securityContext.authenticate(request, response, withParams().credential(credential));
+        
+        System.out.println(status);
+        if (status.equals(SUCCESS)) {
+            System.out.print(securityContext.isCallerInRole("Admin"));
+            System.out.print(securityContext.isCallerInRole("Superwisor"));
+            System.out.print(securityContext.isCallerInRole("admin"));
+            //System.out.print(securityContext.getCallerPrincipal().getName());
+//          System.out.print(securityContext.getCallerPrincipal().toString());
+//                if (securityContext.isCallerInRole("Admin")) {
+//                    res.sendRedirect("/EE8SecurityApp-war/admin.jsp");
+//
+//                } else if (securityContext.isCallerInRole("Supervisor")) {
+//                    res.sendRedirect("/EE8SecurityApp-war/users.jsp");
+//                }
+        } else if (status.equals(SEND_FAILURE)) {
+            System.out.print("Request Failed");
+            response.sendRedirect("/PractiseApplication-war/loginError.jsp");
+        }
+            
+            
             //            for(Statetb st:states) {
 //                out.println(st.getName());
 //            }
