@@ -24,7 +24,7 @@ import javax.ws.rs.core.Response;
  *
  * @author bhavik
  */
-@Named(value = "dealsCategoryBean")
+@Named(value = "dealsCategoryAdminBean")
 @SessionScoped
 public class DealsCategoryBean implements Serializable {
 

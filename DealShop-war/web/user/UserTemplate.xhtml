@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+    <h:head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik:400,500,700%7CSource+Sans+Pro:300i,400,400i,600,700" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="resources/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/plugins/swiper/swiper.min.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/plugins/magnific-popup/magnific-popup.min.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/style.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/responsive.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/colors/theme-color-2.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/custom.css" rel="stylesheet" type="text/css"/>
+        <title>Deal-Shop</title>
+    </h:head>
+
+    <h:body>
+
+        <ui:insert name="top">
+            <!-- Main header -->
+            <header class="header">
+                <div class="main-header" data-animate="fadeInUp" data-delay=".9">
+                    <div class="container py-2">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 col-md-7">
+                                <!-- Logo -->
+                                <div class="logo">
+                                    <a href="index.html">
+<!--                                        <img src="/resources/img/logo.png" alt=""/>-->
+<!--                                        <h:graphicImage value="resources/img/logo.png" />-->
+                                            <img src="/DealShop-war/user/resources/img/logo.png" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-7">
+                                <!-- Header Call -->
+                                <div class="header-top-right d-flex align-items-center justify-content-center justify-content-md-end">
+                                    <form class="parsley-validate d-flex position-relative" action="#">
+                                        <input type="text" placeholder="I am looking for" required="true" />
+                                        <button type="submit"><i class="fa fa-search"></i></button>
+                                    </form>
+                                    <div class="client-area position-relative">
+                                        
+                                            <h:form>
+                                                <span id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Account <i class="fa fa-caret-down"></i></span>
+                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                                    <c:choose>
+                                                        <c:when test="#{userCDIBean.isUserLoggedIn()}">
+                                                            <h:commandLink class="dropdown-item" action="#{userCDIBean.logout()}">Logout</h:commandLink>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <h:commandLink class="dropdown-item" action="#{userCDIBean.goToLogin()}">Sign In</h:commandLink>
+                                                            <h:commandLink class="dropdown-item" action="#{userCDIBean.goToRegister()}">Sign Up</h:commandLink>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
+                                            </h:form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End of Main header -->
+        </ui:insert>
+
+        <ui:insert name="content"></ui:insert>
+
+        <ui:insert name="bottom">
+            <!-- Footer -->
+            <footer class="main-footer">
+            <div class="bottom-footer dark-bg">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <!-- Copyright -->
+                        <div class="col-md-6">
+                            <div class="copyright-text text-center text-md-left">
+                                <p class="mb-md-0">copy; 2018 Serviney. All rights reserved.</p>
+                            </div>
+                        </div>
+
+                        <!-- Social Profiles -->
+                        <div class="col-md-6">
+                            <ul class="social-profiles nav justify-content-center justify-content-md-end">
+                                <li><a href="#" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#" target="_blank"><i class="fa fa-google-plus"></i></a></li>
+                                <li><a href="#" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="#" target="_blank"><i class="fa fa-vimeo"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </footer>
+            <!-- End of Footer -->
+        </ui:insert>
+
+        <!-- Back to top -->
+        <div class="back-to-top">
+            <a href="#"> <i class="fa fa-chevron-up"></i></a>
+        </div>
+        
+        <script src="resources/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+        <script src="resources/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+        <script src="resources/plugins/waypoints/jquery.waypoints.min.js" type="text/javascript"></script>
+        <script src="resources/plugins/waypoints/sticky.min.js" type="text/javascript"></script>
+        <script src="resources/plugins/swiper/swiper.min.js" type="text/javascript"></script>
+        <script src="resources/plugins/magnific-popup/jquery.magnific-popup.min.js" type="text/javascript"></script>
+        <script src="resources/plugins/parsley/parsley.min.js" type="text/javascript"></script>
+        <script src="resources/plugins/isotope/isotope.pkgd.min.js" type="text/javascript"></script>
+        <script src="resources/plugins/retinajs/retina.min.js" type="text/javascript"></script>
+        <script src="resources/js/menu.min.js" type="text/javascript"></script>
+        <script src="resources/js/scripts.js" type="text/javascript"></script>
+        <script src="resources/js/custom.js" type="text/javascript"></script>
+    </h:body>
+</html>
