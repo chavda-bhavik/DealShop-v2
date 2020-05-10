@@ -19,11 +19,11 @@
                             <h:form>
                                 <div class="form-field">
                                     <span class="input-label">E-mail Address <span class="text-danger">*</span></span>
-                                    <h:inputText class="theme-input-style" value="#{userCDIBean.email}" />
+                                    <h:inputText class="theme-input-style" value="#{userCDIBean.email}" required="true" />
                                 </div>
                                 <div class="form-field">
                                     <span class="input-label">Password <span class="text-danger">*</span></span>
-                                    <h:inputSecret class="theme-input-style" value="#{userCDIBean.password}" />
+                                    <h:inputSecret class="theme-input-style" value="#{userCDIBean.password}" required="true" />
                                 </div>
                                 <div class="form-field d-flex align-items-center">
                                     <h:commandButton class="btn btn-info" action="#{userCDIBean.login()}" label="Login" value="Login"></h:commandButton>

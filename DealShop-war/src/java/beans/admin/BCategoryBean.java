@@ -35,7 +35,7 @@ public class BCategoryBean implements Serializable {
     Collection<Businesscategorytb> bCategories;
     
     private Part uploadedFile;
-    private String folder = "C:\\Users\\BHAVIK\\Desktop\\DealShop110\\DealShop110-war\\web\\assets\\images\\businesscategory\\";
+    private String folder = "/media/bhavik/DATA1/Sem8/DealShop/DealShop-war/web/assets/";
     
     private int id;
     private String name;

@@ -235,10 +235,11 @@ public class CommonResource {
     public Usertb login(Usertb user) {
         return common.login(user.getEmail(), user.getPassword());
     }
+    
     @GET
-    @Path("/user")
+    @Path("/user/{email}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Usertb getLoginUser(String Email) {
+    public Usertb getLoginUser(@PathParam("email") String Email) {
         return common.getLoginUser(Email);
     }
 }

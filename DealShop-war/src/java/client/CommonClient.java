@@ -162,9 +162,9 @@ public class CommonClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
-    public <T> T getLoginUser(Class<T> responseType) throws ClientErrorException {
+    public <T> T getLoginUser(Class<T> responseType, String email) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path("user");
+        resource = resource.path(java.text.MessageFormat.format("user/{0}", new Object[]{email}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 

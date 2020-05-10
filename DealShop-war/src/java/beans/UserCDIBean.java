@@ -21,6 +21,7 @@ import static javax.security.enterprise.authentication.mechanism.http.Authentica
 import javax.security.enterprise.credential.Credential;
 import javax.security.enterprise.credential.Password;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -40,6 +41,8 @@ public class UserCDIBean {
     @Inject javax.security.enterprise.SecurityContext securityContext;
 
     FacesContext facesContext = FacesContext.getCurrentInstance();
+    HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+    HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
     HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
     ExternalContext externalContext = facesContext.getExternalContext();
     
@@ -100,76 +103,57 @@ public class UserCDIBean {
     }
     
     public String login() {
+        String returnPage = "";
         try{
-            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             Credential credential = new UsernamePasswordCredential(email, new Password(password));
 
             AuthenticationStatus status= securityContext.authenticate(request, response, withParams().credential(credential));       
             if(status.equals(SUCCESS))
             {
-               HttpSession session = request.getSession(true);
-               session.setAttribute("username", username);
-               session.setAttribute("password", password);
-               System.out.println("Login Success!");
-               if(securityContext.isCallerInRole("Admin"))
-               {
-                  return "/admin/Home.jsf";
-               }
-               else if(securityContext.isCallerInRole("Business"))
-               {
-                   return "/business/UserPage.jsf";
-               } 
-               else if(securityContext.isCallerInRole("User"))
-               {
-                   return "/user/Home.jsf";
-               } else {
-                    System.out.println("User Role Not Founed");
+                HttpSession session = request.getSession(true);
+                res = commonClient.getLoginUser(Response.class, email);
+                loginUser = res.readEntity(gUser);
+
+                session.setAttribute("useremail", loginUser.getEmail());
+                session.setAttribute("role", loginUser.getUserCategoryID().getName());
+                session.setAttribute("userid", loginUser.getUserID());
+                session.setAttribute("username", loginUser.getName());
+                System.out.println(loginUser.getEmail());
+                if(securityContext.isCallerInRole("Admin"))
+                {
+                    System.out.println("Admin Login Success!");
+                    returnPage = "/admin/Home.jsf?faces-redirect=true";
+                }
+                else if(securityContext.isCallerInRole("Business"))
+                {
+                    System.out.println("Business Login Success!");
+                    returnPage = "/business/Home.jsf?faces-redirect=true";
+                } 
+                else if(securityContext.isCallerInRole("User"))
+                {
+                   System.out.println("user Login Success!");
+                   returnPage = "/user/Home.jsf";
+                } else {
+                    System.out.println("Role Not Found!");
                     UserActionMessage = "User Role Not Founed !!!";
-                    return "/user/Login.jsf";
-               }
+                    returnPage = "/user/Login.jsf";
+                }
             }
             else if(status.equals(SEND_FAILURE))
             {
-                UserActionMessage = "Either user or password is wrong !!!";
-                return "/Login.jsf";
-            }       
+                UserActionMessage = "Email/Password is wrong !!!";
+                returnPage = "/user/Login.jsf";
+            }    
         }
         catch (Exception e)
         {
-            UserActionMessage = "Out- Either user or login is wrong !!!";
+            UserActionMessage = "Oops! Something went wrong!!!";
             e.printStackTrace();
+            returnPage = "/user/Login.jsf";
         }
-        
-        return null;
-        
-//        String returnPage = "/user/Login.jsf";
-//        Usertb ur = new Usertb();
-//        ur.setEmail(email);
-//        ur.setName(username);
-//        ur.setPassword(password);
-//        res = commonClient.login(ur, Response.class);
-//        loginUser = res.readEntity(gUser);
-//        if(loginUser.getEmail() == null) {
-//            isUserAuthenticated = false;
-//            UserActionMessage = "Email / Password are Invalid!";
-//        } else {
-//            session.setAttribute("useremail", loginUser.getEmail());
-//            session.setAttribute("role", loginUser.getUserCategoryID().getName());
-//            session.setAttribute("userid", loginUser.getUserID());
-//            session.setAttribute("username", loginUser.getName());
-//            if(loginUser.getUserCategoryID().getName().equals("Business")) {
-//                returnPage = "/business/Home.jsf?faces-redirect=true";
-//            }
-//            if(loginUser.getUserCategoryID().getName().equals("Admin")) {
-//                returnPage = "/admin/Home.jsf?faces-redirect=true";
-//            }
-//            if(loginUser.getUserCategoryID().getName().equals("User")) {
-//                returnPage = "/user/Home.jsf?faces-redirect=true";
-//            }
-//        }
-//        return returnPage;
+        return returnPage;
     }
+    
     public String register() {
         Usertb ur = new Usertb();
         ur.setEmail(email);
@@ -178,6 +162,7 @@ public class UserCDIBean {
         userClient.addUser(ur);
         return "/user/Login.jsf";
     }
+    
     public String goToLogin() {
         String page = "/user/Login.jsf";
         if(this.isUserAuthenticated) {
@@ -185,28 +170,36 @@ public class UserCDIBean {
         }
         return page;
     }
+    
     public String goToRegister() {
         return "/user/Register.jsf";
     }
-    public String logout() {
+    
+    public void logout() throws ServletException {
+        request.logout();
         session.removeAttribute("useremail");
         session.removeAttribute("role");
         session.removeAttribute("userid");
         session.removeAttribute("username");
-        return "/user/Login.jsf?faces-redirec=true";
+//        return "/user/Home.jsf?faces-redirec=true";
     }
+    
     public Boolean isUserLoggedIn() {
         return session.getAttribute("role") == null ? false : true;
     }
+    
     public String getLoginUserName() {
         return session.getAttribute("username").toString();
     }
+    
     public String getLoginUserEmail() {
         return session.getAttribute("useremail").toString();
     }
+    
     public int getLoginUserId() {
         return Integer.valueOf(session.getAttribute("userid").toString());
     }
+    
     public String goToHomePage() {
         String homepage = "/user/Home.jsf";
         if(session.getAttribute("role") == "Business") {
@@ -218,17 +211,18 @@ public class UserCDIBean {
         }
         return homepage;
     }
+    
     public Usertb getLoginUser() {
-        res = commonClient.getLoginUser(Response.class);
-        loginUser = res.readEntity(gUser);
         return loginUser;
     }
+    
     public void checkLoginAndRedirect() throws IOException {
         Object h = session.getAttribute("userid");
         if(h==null) {
             externalContext.redirect(externalContext.getRequestContextPath() + "/user/Home.jsf");
         }
     }
+    
     public UserCDIBean() {
         userClient = new UserClient();
         commonClient = new CommonClient();
