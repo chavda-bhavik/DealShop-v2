@@ -135,6 +135,7 @@ public class CommonBean implements CommonBeanLocal {
         return categories;
     }
 
+    //---Deals---
     @Override
     public Dealstb getSingleDeal(int DealID) {
         Dealstb deal = (Dealstb) em.createNamedQuery("Dealstb.findByDealID").setParameter("dealID", DealID).getSingleResult();
@@ -166,6 +167,13 @@ public class CommonBean implements CommonBeanLocal {
         return deal.getDealsdetailstbCollection().iterator().next();
     }
 
+    @Override
+    public Collection<Dealstb> getDealsByRecentlyAdded() {
+        Collection<Dealstb> deals = em.createQuery("select d from Dealstb d ORDER BY d.dueDate").getResultList();
+        return deals;
+    }
+
+    //---Deals Menu---
     @Override
     public Dealsmenutb getDealMenu(int DealID) {
         Dealstb deal = em.find(Dealstb.class, DealID);

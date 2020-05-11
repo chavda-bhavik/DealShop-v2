@@ -60,6 +60,8 @@ public interface CommonBeanLocal {
     Collection<Dealstb> getBusinessDeals(int BussinessID);
     Collection<Dealstb> getDealsByCategory(int DealCategoryID);
     Collection<Dealstb> getDealsByMaxSoldNo(int limit);
+    Collection<Dealstb> getDealsByRecentlyAdded();
+    
     //---Deals Details---
     Dealsdetailstb getDealDetails(int DealID);
     

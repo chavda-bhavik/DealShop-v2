@@ -20,88 +20,10 @@
     </h:head>
 
     <h:body>
-
-        <ui:insert name="top">
-            <!-- Main header -->
-            <header class="header">
-                <div class="main-header" data-animate="fadeInUp" data-delay=".9">
-                    <div class="container py-2">
-                        <div class="row align-items-center">
-                            <div class="col-lg-6 col-md-7">
-                                <!-- Logo -->
-                                <div class="logo">
-                                    <a href="index.html">
-<!--                                        <img src="/resources/img/logo.png" alt=""/>-->
-<!--                                        <h:graphicImage value="resources/img/logo.png" />-->
-                                            <img src="/DealShop-war/user/resources/img/logo.png" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-7">
-                                <!-- Header Call -->
-                                <div class="header-top-right d-flex align-items-center justify-content-center justify-content-md-end">
-                                    <form class="parsley-validate d-flex position-relative" action="#">
-                                        <input type="text" placeholder="I am looking for" required="true" />
-                                        <button type="submit"><i class="fa fa-search"></i></button>
-                                    </form>
-                                    <div class="client-area position-relative">
-                                        
-                                            <h:form>
-                                                <span id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Account <i class="fa fa-caret-down"></i></span>
-                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                    <c:choose>
-                                                        <c:when test="#{userCDIBean.isUserLoggedIn()}">
-                                                            <h:commandLink class="dropdown-item" action="#{userCDIBean.logout()}">Logout</h:commandLink>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <h:commandLink class="dropdown-item" action="#{userCDIBean.goToLogin()}">Sign In</h:commandLink>
-                                                            <h:commandLink class="dropdown-item" action="#{userCDIBean.goToRegister()}">Sign Up</h:commandLink>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </div>
-                                            </h:form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <!-- End of Main header -->
-        </ui:insert>
-
+        <ui:include src="Header.xhtml" />
         <ui:insert name="content"></ui:insert>
-
-        <ui:insert name="bottom">
-            <!-- Footer -->
-            <footer class="main-footer">
-            <div class="bottom-footer dark-bg">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <!-- Copyright -->
-                        <div class="col-md-6">
-                            <div class="copyright-text text-center text-md-left">
-                                <p class="mb-md-0">copy; 2018 Serviney. All rights reserved.</p>
-                            </div>
-                        </div>
-
-                        <!-- Social Profiles -->
-                        <div class="col-md-6">
-                            <ul class="social-profiles nav justify-content-center justify-content-md-end">
-                                <li><a href="#" target="_blank"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#" target="_blank"><i class="fa fa-google-plus"></i></a></li>
-                                <li><a href="#" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="#" target="_blank"><i class="fa fa-vimeo"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </footer>
-            <!-- End of Footer -->
-        </ui:insert>
-
+        <ui:include src="Footer.xhtml" />
+        
         <!-- Back to top -->
         <div class="back-to-top">
             <a href="#"> <i class="fa fa-chevron-up"></i></a>

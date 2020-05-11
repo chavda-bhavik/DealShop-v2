@@ -79,6 +79,7 @@ public class UserDealsBean {
         String userId = session.getAttribute("userid").toString();
         res = userClient.getUserCartDeals(Response.class, userId);
         userCart = res.readEntity(gUserCart);
+        this.setTotalPrice();
         return userCart;
     }
 
@@ -88,7 +89,7 @@ public class UserDealsBean {
     
     public void removeDealFromCart(int cartId) {
         userClient.removeDealFromCart(String.valueOf(cartId));
-        this.fetchUserDeals();
+        //this.fetchUserDeals();
     }
     
     public void checkLoginAndRedirect() throws IOException {
@@ -103,8 +104,8 @@ public class UserDealsBean {
         String userId = session.getAttribute("userid").toString();
         res = userClient.getUserCartDeals(Response.class, userId);
         userCart = res.readEntity(gUserCart);
-        this.setTotalPrice();
     }
+    
     public void setTotalPrice() {
         for (Carttb carttb : userCart) {
             totalPrice += carttb.getDealID().getAverageCost();
@@ -112,9 +113,10 @@ public class UserDealsBean {
         if(offer != null) {
             totalPrice = totalPrice - (totalPrice*offer.getPercentOff()) / 100;
             totalPrice = totalPrice - offer.getDollarsOff();
-            totalPrice = totalPrice + (totalPrice*10) / 100;
             //totalPrice -= totalPrice*offer
         }
+        totalPrice = totalPrice + (totalPrice*10) / 100;
+        System.out.println("Setted totoal Price = "+totalPrice);
         session.setAttribute("totalPrice", totalPrice);
     }
     

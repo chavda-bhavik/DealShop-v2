@@ -57,7 +57,6 @@ public class DealsDetailsBean {
     Boolean CartContainsDeal;
 
     public Boolean getCartContainsDeal() {
-        System.out.println("Getting "+CartContainsDeal);
         return CartContainsDeal;
     }
     
@@ -120,7 +119,6 @@ public class DealsDetailsBean {
         if(userId != null) {
             res = userClient.ifCartContainsDeal(Response.class, userId.toString(), Deal.getDealID().toString());
             CartContainsDeal = Boolean.valueOf(res.readEntity(String.class));
-            System.out.println("Fetching "+CartContainsDeal);
         }
         
         // Get Deal Business
@@ -150,15 +148,16 @@ public class DealsDetailsBean {
         
         session.setAttribute("dealId", dealId);
     }
+    
     public String addDealToCart() {
         String userId = session.getAttribute("userid").toString();
         String dealId = session.getAttribute("dealId").toString();
-        System.out.println(userId+":"+dealId);
         if(dealId != null) {
             userClient.addDealToCart(userId, dealId);
         }
         return "/user/UserDeals.jsf?faces-redirect=true";
     }
+    
     public DealsDetailsBean() {
         common = new CommonClient();
         userClient = new UserClient();

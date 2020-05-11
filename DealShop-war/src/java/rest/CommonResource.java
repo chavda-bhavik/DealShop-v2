@@ -183,7 +183,13 @@ public class CommonResource {
     public Collection<Dealstb> getDealsBySoldNo(@PathParam("limit") int limit) {
         return common.getDealsByMaxSoldNo(limit);
     }
-
+    @GET
+    @Path("/dealsByDueDate")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<Dealstb> getDealsByDueDate() {
+        return common.getDealsByRecentlyAdded();
+    }
+    
     // DealDetails
     @GET
     @Path("/dealDetail/{did}")

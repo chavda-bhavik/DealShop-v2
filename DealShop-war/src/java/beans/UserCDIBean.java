@@ -39,7 +39,7 @@ import org.glassfish.soteria.identitystores.hash.Pbkdf2PasswordHashImpl;
 public class UserCDIBean {
     
     @Inject javax.security.enterprise.SecurityContext securityContext;
-
+    
     FacesContext facesContext = FacesContext.getCurrentInstance();
     HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
     HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
@@ -181,7 +181,6 @@ public class UserCDIBean {
         session.removeAttribute("role");
         session.removeAttribute("userid");
         session.removeAttribute("username");
-//        return "/user/Home.jsf?faces-redirec=true";
     }
     
     public Boolean isUserLoggedIn() {

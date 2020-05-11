@@ -33,12 +33,20 @@ public class DealsBean {
         showingDeals = res.readEntity(gDeals);
         return "/user/Deals";
     }
+    
     public Collection<Dealstb> getShowingDeals() {
         return showingDeals;
     }
+    public String showDealsByDueDate() {
+        res = common.getDealsByDueDate(Response.class);
+        showingDeals = res.readEntity(gDeals);
+        return "/user/Deals";
+    }
+    
     public void test() {
         System.out.println("Deals Test");
     }
+    
     public Collection<Dealstb> getMaxSoldDeals() {
         res = common.getDealsBySoldNo(Response.class, String.valueOf(10));
         maxSoldDeals = res.readEntity(gDeals);
